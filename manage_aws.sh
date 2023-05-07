@@ -13,6 +13,7 @@ case $ACTION in
     start)
         # Get the instance state
         INSTANCE_STATE=$(aws ec2 describe-instances --instance-ids $INSTANCE_ID --query "Reservations[].Instances[].[State.Name]" --output text)
+        echo "Current instance state: $INSTANCE_STATE"
 
         # Start the instance if it is stopped
         if [[ $INSTANCE_STATE == "stopped" ]]; then
@@ -35,8 +36,7 @@ case $ACTION in
     stop)
         # Stop the instance
         aws ec2 stop-instances --instance-ids $INSTANCE_ID
-        aws ec2 wait instance-stopped --instance-ids $INSTANCE_ID
-        echo "Instance stopped."
+        echo "Instance stopping."
         ;;
 
     *)
